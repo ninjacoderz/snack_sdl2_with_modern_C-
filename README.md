@@ -40,12 +40,20 @@
 #2. Add more road block.
 	# Criteria: 
     	Class constructors utilize member initialization lists.
-        One or more classes are added to the project with appropriate access specifiers for class members.
+        	RoadBlock initialzation it's upper left right bottom members
         The project makes use of references in function declarations.
-        The project follows the Rule of 5. I implement Rule Of Five for snake and roadblock
+        	I use references in constructors
+        One or more classes are added to the project with appropriate access specifiers for class members.
+        	RoadBlock class is added, ScoreFile Is added
+        The project follows the Rule of 5. 
+        	I implement Rule Of Five for snake and roadblock
+            
         The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. 
-        The project uses smart pointers instead of raw pointers.
-        
+        The project uses smart pointers instead of raw pointers. 
+        	I use unique pointer for RoadBlock
+        The project uses multithreading.
+        A mutex or lock is used in the project.
+        	 I use mutiple threading and mutex to handle draw RoadBlock and Snake
 	Blocks will have blue color (  0, 0, 255, 255 )
     Update Renderer to draw block Renderer::RenderBlock
     When snake hit block, the game is over:  Game::DetectCollision

@@ -7,15 +7,29 @@
 #IncludeRegexTransform: 
 
 /home/workspace/CppND-Capstone-Snake-Game/src/renderer.cpp
-renderer.h
-/home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
 iostream
 -
 string
 -
+thread
+-
+future
+-
+mutex
+-
+renderer.h
+/home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
 
 /home/workspace/CppND-Capstone-Snake-Game/src/renderer.h
 vector
+-
+memory
+-
+thread
+-
+future
+-
+mutex
 -
 SDL.h
 /home/workspace/CppND-Capstone-Snake-Game/src/SDL.h
@@ -23,8 +37,6 @@ snake.h
 /home/workspace/CppND-Capstone-Snake-Game/src/snake.h
 roadblock.h
 /home/workspace/CppND-Capstone-Snake-Game/src/roadblock.h
-memory
--
 
 /home/workspace/CppND-Capstone-Snake-Game/src/roadblock.h
 memory

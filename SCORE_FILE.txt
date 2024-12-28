@@ -9,3 +9,4 @@ Player name: KKK, Player score: 1, Snake size: 2
 Player name: MMM, Player score: 1, Snake size: 2
 Player name: l, Player score: 0, Snake size: 1
 Player name: LL, Player score: 0, Snake size: 1
+Player name: binh, Player score: 0, Snake size: 1
