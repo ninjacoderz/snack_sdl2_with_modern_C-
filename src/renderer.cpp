@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food, RoadBlock* root) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, std::unique_ptr<RoadBlock>& root) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -83,21 +83,23 @@ void Renderer::UpdateWindowTitle(int score, int fps) {
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
 
-void Renderer::RenderBlock(RoadBlock *root, SDL_Rect *block)
+void Renderer::RenderBlock(std::unique_ptr<RoadBlock>& root, SDL_Rect *block)
 {
     if (root == nullptr || root->count == 0)
         return;
 
+    // Nếu là khối lá (leaf node), render nó
     if (root->right - root->left == 1 && root->ceiling - root->floor == 1)
     {
         block->x = root->left * block->w;
         block->y = root->floor * block->h;
 
-        SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 255, 255);
+        SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 255, 255); // Blue color for blocks
         SDL_RenderFillRect(sdl_renderer, block);
         return;
     }
 
+    // Gọi đệ quy cho các khối con (không sử dụng std::move ở đây)
     RenderBlock(root->lower_left, block);
     RenderBlock(root->lower_right, block);
     RenderBlock(root->upper_left, block);

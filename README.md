@@ -44,6 +44,8 @@
         The project makes use of references in function declarations.
         The project follows the Rule of 5. I implement Rule Of Five for snake and roadblock
         The project uses scope / Resource Acquisition Is Initialization (RAII) where appropriate. 
+        The project uses smart pointers instead of raw pointers.
+        
 	Blocks will have blue color (  0, 0, 255, 255 )
     Update Renderer to draw block Renderer::RenderBlock
     When snake hit block, the game is over:  Game::DetectCollision

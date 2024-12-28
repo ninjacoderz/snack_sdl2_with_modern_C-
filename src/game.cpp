@@ -1,13 +1,13 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
-
+#include <memory>
 Game::Game(std::size_t grid_width, std::size_t grid_height, int init_num_blocks)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
-	road_blocks = new RoadBlock(grid_width, grid_height);
+	road_blocks = std::make_unique<RoadBlock>(grid_width, grid_height);
     for (int i = 0; i < init_num_blocks; i++)
         PlaceBlock();
   	PlaceFood();
@@ -117,42 +117,37 @@ void Game::PlaceBlock() {
     }
 }
 
-bool Game::DetectCollision(RoadBlock* root, int x, int y)
+bool Game::DetectCollision(std::unique_ptr<RoadBlock>& root, int x, int y)
 {
-
     if (root == nullptr || root->count == 0)
         return false;
 
-    if (root->right - root->left == 1 && root->ceiling - root->floor == 1) 
-    {
-
-        if (x == root->left && y == root->floor)
-        {
+    if (root->right - root->left == 1 && root->ceiling - root->floor == 1) {
+        if (x == root->left && y == root->floor) {
             snake.alive = false;
             return true;
         }
-
     }
 
     int mid_x = (root->left + root->right) / 2;
     int mid_y = (root->floor + root->ceiling) / 2;
 
     if (x < mid_x && y < mid_y)
-        DetectCollision(root->upper_left, x, y);
+        return DetectCollision(root->upper_left, x, y);
 
     if (x < mid_x && y >= mid_y)
-        DetectCollision(root->lower_left, x, y);
+        return DetectCollision(root->lower_left, x, y);
 
     if (x >= mid_x && y < mid_y)
-        DetectCollision(root->upper_right, x, y);
+        return DetectCollision(root->upper_right, x, y);
 
     if (x >= mid_x && y >= mid_y)
-        DetectCollision(root->lower_right, x, y);
+        return DetectCollision(root->lower_right, x, y);
 
     return false;
 }
 
-void Game::InsertBlock(RoadBlock* root, int x, int y)
+void Game::InsertBlock(std::unique_ptr<RoadBlock>& root, int x, int y)
 {
     if (root == nullptr)
         return;
@@ -169,36 +164,35 @@ void Game::InsertBlock(RoadBlock* root, int x, int y)
     if (x < mid_x && y < mid_y)
     {
         if (root->upper_left == nullptr)
-            root->upper_left = new RoadBlock(root->left, mid_x, root->floor, mid_y);
+            root->upper_left = std::make_unique<RoadBlock>(root->left, mid_x, root->floor, mid_y);
         InsertBlock(root->upper_left, x, y);
     }
 
     if (x < mid_x && y >= mid_y)
     {
         if (root->lower_left == nullptr)
-            root->lower_left = new RoadBlock(root->left, mid_x, mid_y, root->ceiling);
+            root->lower_left = std::make_unique<RoadBlock>(root->left, mid_x, mid_y, root->ceiling);
         InsertBlock(root->lower_left, x, y);
     }
 
     if (x >= mid_x && y < mid_y)
     {
         if (root->upper_right == nullptr)
-            root->upper_right = new RoadBlock(mid_x, root->right, root->floor, mid_y);
+            root->upper_right = std::make_unique<RoadBlock>(mid_x, root->right, root->floor, mid_y);
         InsertBlock(root->upper_right, x, y);
     }
 
     if (x >= mid_x && y >= mid_y)
     {
         if (root->lower_right == nullptr)
-            root->lower_right = new RoadBlock(mid_x, root->right, mid_y, root->ceiling);
+            root->lower_right = std::make_unique<RoadBlock>(mid_x, root->right, mid_y, root->ceiling);
         InsertBlock(root->lower_right, x, y);
     }
 
     root->UpdateCount();
 }
 
-
-void Game::DeleteBlock(RoadBlock* root, int x, int y)
+void Game::DeleteBlock(std::unique_ptr<RoadBlock>& root, int x, int y)
 {
     if (root == nullptr || root->count == 0)
         return;

@@ -7,7 +7,7 @@
 #include "renderer.h"
 #include "snake.h"
 #include "roadblock.h"
-
+#include <memory>
 class Game {
  public:
   Game(std::size_t grid_width, std::size_t grid_height, int init_num_blocks);
@@ -31,11 +31,11 @@ class Game {
   void Update();
   
   void PlaceBlock();
-  void InsertBlock(RoadBlock *, int, int);
-  void DeleteBlock(RoadBlock*, int, int);
+  void InsertBlock(std::unique_ptr<RoadBlock>& , int, int);
+  void DeleteBlock(std::unique_ptr<RoadBlock>& , int, int);
 
-  RoadBlock *road_blocks;
-  bool DetectCollision(RoadBlock *, int, int);
+  std::unique_ptr<RoadBlock> road_blocks;
+  bool DetectCollision(std::unique_ptr<RoadBlock>&, int, int);
 };
 
 #endif
