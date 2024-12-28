@@ -77,3 +77,90 @@ bool Snake::SnakeCell(int x, int y) {
   }
   return false;
 }
+
+// Destructor
+Snake::~Snake() {
+  // Do nothing because std::vector auto release resource
+}
+
+// Copy Constructor
+Snake::Snake(const Snake &other)
+    : grid_width(other.grid_width),
+      grid_height(other.grid_height),
+      head_x(other.head_x),
+      head_y(other.head_y),
+      body(other.body),
+      direction(other.direction),
+      speed(other.speed),
+      size(other.size),
+      alive(other.alive),
+      growing(other.growing) {}
+
+// Copy Assignment Operator
+Snake &Snake::operator=(const Snake &other) {
+  if (this == &other) {
+    return *this;
+  }
+
+  // Sao chép dữ liệu
+  grid_width = other.grid_width;
+  grid_height = other.grid_height;
+  head_x = other.head_x;
+  head_y = other.head_y;
+  body = other.body;  // std::vector hỗ trợ copy assignment.
+  direction = other.direction;
+  speed = other.speed;
+  size = other.size;
+  alive = other.alive;
+  growing = other.growing;
+
+  return *this;
+}
+
+// Move Constructor
+Snake::Snake(Snake &&other) noexcept
+    : grid_width(other.grid_width),
+      grid_height(other.grid_height),
+      head_x(other.head_x),
+      head_y(other.head_y),
+      body(std::move(other.body)),
+      direction(other.direction),
+      speed(other.speed),
+      size(other.size),
+      alive(other.alive),
+      growing(other.growing) {
+  // Đặt trạng thái của `other` về giá trị mặc định.
+  other.head_x = 0.0f;
+  other.head_y = 0.0f;
+  other.size = 1;
+  other.alive = true;
+  other.growing = false;
+}
+
+// Move Assignment Operator
+Snake &Snake::operator=(Snake &&other) noexcept {
+  if (this == &other) {
+    return *this;
+  }
+
+  // Chuyển tài nguyên
+  grid_width = other.grid_width;
+  grid_height = other.grid_height;
+  head_x = other.head_x;
+  head_y = other.head_y;
+  body = std::move(other.body);  // Di chuyển tài nguyên.
+  direction = other.direction;
+  speed = other.speed;
+  size = other.size;
+  alive = other.alive;
+  growing = other.growing;
+
+  // Đặt trạng thái của `other` về giá trị mặc định.
+  other.head_x = 0.0f;
+  other.head_y = 0.0f;
+  other.size = 1;
+  other.alive = true;
+  other.growing = false;
+
+  return *this;
+}

@@ -38,7 +38,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, RoadBlock* root) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -61,6 +61,9 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
     SDL_RenderFillRect(sdl_renderer, &block);
   }
 
+  // Render Block 
+   RenderBlock(root, &block);
+  
   // Render snake's head
   block.x = static_cast<int>(snake.head_x) * block.w;
   block.y = static_cast<int>(snake.head_y) * block.h;
@@ -79,3 +82,25 @@ void Renderer::UpdateWindowTitle(int score, int fps) {
   std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }
+
+void Renderer::RenderBlock(RoadBlock *root, SDL_Rect *block)
+{
+    if (root == nullptr || root->count == 0)
+        return;
+
+    if (root->right - root->left == 1 && root->ceiling - root->floor == 1)
+    {
+        block->x = root->left * block->w;
+        block->y = root->floor * block->h;
+
+        SDL_SetRenderDrawColor(sdl_renderer, 0, 0, 255, 255);
+        SDL_RenderFillRect(sdl_renderer, block);
+        return;
+    }
+
+    RenderBlock(root->lower_left, block);
+    RenderBlock(root->lower_right, block);
+    RenderBlock(root->upper_left, block);
+    RenderBlock(root->upper_right, block);
+}
+

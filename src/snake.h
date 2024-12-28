@@ -27,7 +27,13 @@ class Snake {
   float head_x;
   float head_y;
   std::vector<SDL_Point> body;
-
+	
+  // Rule of 5
+   ~Snake();                               // Destructor
+  Snake(const Snake &other);              // Copy Constructor
+  Snake &operator=(const Snake &other);   // Copy Assignment Operator
+  Snake(Snake &&other) noexcept;          // Move Constructor
+  Snake &operator=(Snake &&other) noexcept; // Move Assignment Operator
  private:
   void UpdateHead();
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);

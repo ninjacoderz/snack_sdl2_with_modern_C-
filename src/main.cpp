@@ -2,8 +2,13 @@
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
+#include "scorefile.h"
 
 int main() {
+  std::cout << "Player name: ";
+  std::string name;
+  std::cin >> name;
+  
   constexpr std::size_t kFramesPerSecond{60};
   constexpr std::size_t kMsPerFrame{1000 / kFramesPerSecond};
   constexpr std::size_t kScreenWidth{640};
@@ -13,10 +18,17 @@ int main() {
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight);
+  
+  int numberBlocks = 5;
+  Game game(kGridWidth, kGridHeight, numberBlocks);
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
-  std::cout << "Score: " << game.GetScore() << "\n";
-  std::cout << "Size: " << game.GetSize() << "\n";
+  int score = game.GetScore();
+  int size = game.GetSize();
+  ScoreFile* scoreHandler = new ScoreFile();
+  scoreHandler->WriteToFile(name, score, size);
+  
+  std::cout << "Score: " << score << "\n";
+  std::cout << "Size: " << size << "\n";
   return 0;
 }
